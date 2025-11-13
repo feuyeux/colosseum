@@ -1,0 +1,18 @@
+langchain4j:
+  ollama:
+    base-url: http://localhost:11434
+    model: qwen2.5:latest
+    timeout: 120
+
+translation:
+  max-text-length: 10000
+  translation-timeout: 60
+  analysis-timeout: 90
+
+server:
+  port: 8082
+
+logging:
+  level:
+    org.feuyeux.ai.langchain4j.colosseo: DEBUG
+    dev.langchain4j: DEBUG

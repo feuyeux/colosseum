@@ -1,0 +1,66 @@
+spring:
+  application:
+    name: savant
+  
+  ai:
+    ollama:
+      base-url: http://localhost:11434
+      chat:
+        options:
+          model: qwen2.5:latest
+          temperature: 0.7
+          # Increase timeout for complex grammar analysis
+          num-predict: 8192
+      embedding:
+        options:
+          model: nomic-embed-text:latest
+      init:
+        pull-model-strategy: when_missing
+      models:
+        - name: qwen2.5:latest
+        - name: nomic-embed-text:latest
+      # Add connection and request timeouts
+      timeout: 120s
+
+embabel:
+  models:
+    default-llm: qwen2.5:latest
+    default-embedding-model: nomic-embed-text:latest
+    embedding-services:
+      best: nomic-embed-text:latest
+      cheapest: nomic-embed-text:latest
+    llms:
+      best: qwen2.5:latest
+      cheapest: qwen2.5:latest
+  agent-platform:
+    ranking:
+      llm: qwen2.5:latest
+
+server:
+  port: 8080
+
+translation:
+  max-text-length: 10000
+  # Increase timeouts to allow for complex processing
+  translation-timeout: 60s
+  analysis-timeout: 90s
+  supported-languages:
+    - en
+    - zh
+    - ja
+    - ko
+    - fr
+    - de
+    - es
+    - it
+    - pt
+    - ru
+    - ar
+    - hi
+
+logging:
+  level:
+    org.feuyeux.ai.embabel.savant: INFO
+    com.embabel.agent: INFO
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} - %msg%n"
