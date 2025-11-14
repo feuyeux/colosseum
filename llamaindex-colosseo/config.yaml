@@ -1,0 +1,36 @@
+ollama:
+  base-url: http://localhost:11434
+  model-name: qwen2.5:latest
+  timeout: 60
+
+application:
+  max-text-length: 1000
+  supported-languages:
+    - en
+    - zh
+    - ja
+    - ko
+    - fr
+    - de
+    - es
+    - it
+    - pt
+    - ru
+    - ar
+
+language-names:
+  en: English
+  zh: Chinese
+  ja: Japanese
+  ko: Korean
+  fr: French
+  de: German
+  es: Spanish
+  it: Italian
+  pt: Portuguese
+  ru: Russian
+  ar: Arabic
+
+server:
+  host: 0.0.0.0
+  port: 60800

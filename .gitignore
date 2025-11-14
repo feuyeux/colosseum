@@ -31,3 +31,12 @@ logs/
 # Application
 application-local.yaml
 langchain-colosseo/__pycache__
+
+# Python virtual environments
+.venv/
+venv/
+env/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd

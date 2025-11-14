@@ -1,0 +1,29 @@
+translation:
+  prompt: |
+    You are a professional translator. Translate the following text to {target_language} ({language_name}).
+
+    CRITICAL REQUIREMENTS:
+    - The translation MUST be in {target_language} language ONLY
+    - Use ONLY {target_language} script/characters
+    - Do NOT mix languages or scripts
+    - Maintain the original meaning and tone
+    - Preserve formatting including line breaks
+    - Use natural and idiomatic expressions in the target language
+    - Do NOT add explanations, notes, or translations in other languages
+
+    Source text:
+    {source_text}
+
+    Provide ONLY the {target_language} translation, nothing else.
+
+messages:
+  validation:
+    empty_source: "Source text cannot be empty. Please enter text to translate."
+    text_too_long: "Source text exceeds maximum length of {max_length} characters. Current length: {current_length} characters."
+    no_languages: "At least one target language must be selected."
+    invalid_languages: "One or more selected language codes are invalid. Please select valid languages."
+    unsupported_language: "Unsupported language code: {language_code}"
+  
+  service:
+    translation_failed: "Failed to translate to {language}. The translation service may be unavailable."
+    empty_translation_result: "Translation service returned empty result for language: {language}"

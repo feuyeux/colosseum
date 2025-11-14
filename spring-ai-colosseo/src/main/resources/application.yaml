@@ -12,6 +12,31 @@ translation:
   max-text-length: 10000
   translation-timeout: 60
   analysis-timeout: 90
+  supported-languages:
+    - en
+    - zh
+    - ja
+    - ko
+    - fr
+    - de
+    - es
+    - it
+    - pt
+    - ru
+    - ar
+
+language-names:
+  en: English
+  zh: Chinese
+  ja: Japanese
+  ko: Korean
+  fr: French
+  de: German
+  es: Spanish
+  it: Italian
+  pt: Portuguese
+  ru: Russian
+  ar: Arabic
 
 server:
   port: 50100

@@ -3,591 +3,139 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LangGraph4j Translation & Grammar Analysis</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            padding: 20px;
-        }
-        
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            background: white;
-            border-radius: 15px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
-            overflow: hidden;
-        }
-        
-        .header {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 30px;
-            text-align: center;
-        }
-        
-        .header h1 {
-            font-size: 2.5em;
-            margin-bottom: 10px;
-            font-weight: 300;
-        }
-        
-        .header p {
-            font-size: 1.1em;
-            opacity: 0.9;
-        }
-        
-        .content {
-            padding: 40px;
-        }
-        
-        .tabs {
-            display: flex;
-            margin-bottom: 30px;
-            border-bottom: 2px solid #f0f0f0;
-        }
-        
-        .tab {
-            padding: 15px 30px;
-            background: none;
-            border: none;
-            font-size: 16px;
-            cursor: pointer;
-            color: #666;
-            transition: all 0.3s ease;
-            border-bottom: 3px solid transparent;
-        }
-        
-        .tab.active {
-            color: #667eea;
-            border-bottom-color: #667eea;
-        }
-        
-        .tab:hover {
-            color: #667eea;
-        }
-        
-        .tab-content {
-            display: none;
-        }
-        
-        .tab-content.active {
-            display: block;
-        }
-        
-        .form-group {
-            margin-bottom: 20px;
-        }
-        
-        label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: 600;
-            color: #333;
-        }
-        
-        input, select, textarea {
-            width: 100%;
-            padding: 12px;
-            border: 2px solid #e0e0e0;
-            border-radius: 8px;
-            font-size: 16px;
-            transition: border-color 0.3s ease;
-        }
-        
-        input:focus, select:focus, textarea:focus {
-            outline: none;
-            border-color: #667eea;
-        }
-        
-        textarea {
-            resize: vertical;
-            min-height: 120px;
-        }
-        
-        .language-selectors {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 20px;
-            margin-bottom: 20px;
-        }
-        
-        .btn {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            border: none;
-            padding: 12px 30px;
-            border-radius: 8px;
-            font-size: 16px;
-            cursor: pointer;
-            transition: transform 0.3s ease;
-        }
-        
-        .btn:hover {
-            transform: translateY(-2px);
-        }
-        
-        .btn:disabled {
-            opacity: 0.6;
-            cursor: not-allowed;
-            transform: none;
-        }
-        
-        .result {
-            margin-top: 30px;
-            padding: 20px;
-            background: #f8f9fa;
-            border-radius: 8px;
-            border-left: 4px solid #667eea;
-        }
-        
-        .result h3 {
-            color: #333;
-            margin-bottom: 15px;
-        }
-        
-        .result-content {
-            background: white;
-            padding: 15px;
-            border-radius: 5px;
-            border: 1px solid #e0e0e0;
-            white-space: pre-wrap;
-        }
-        
-        .error {
-            background: #fee;
-            border-left-color: #f44336;
-            color: #d32f2f;
-        }
-        
-        .loading {
-            text-align: center;
-            padding: 20px;
-            color: #667eea;
-        }
-        
-        .spinner {
-            border: 3px solid #f3f3f3;
-            border-top: 3px solid #667eea;
-            border-radius: 50%;
-            width: 30px;
-            height: 30px;
-            animation: spin 1s linear infinite;
-            margin: 0 auto 10px;
-        }
-        
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-        
-        .grammar-components {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            margin-top: 15px;
-        }
-        
-        .grammar-component {
-            padding: 8px 12px;
-            border-radius: 20px;
-            font-size: 14px;
-            font-weight: 500;
-            color: white;
-        }
-        
-        .multi-translations {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 20px;
-            margin-top: 20px;
-        }
-        
-        .translation-card {
-            background: white;
-            padding: 15px;
-            border-radius: 8px;
-            border: 1px solid #e0e0e0;
-        }
-        
-        .translation-card h4 {
-            color: #667eea;
-            margin-bottom: 10px;
-        }
-        
-        @media (max-width: 768px) {
-            .language-selectors {
-                grid-template-columns: 1fr;
-            }
-            
-            .multi-translations {
-                grid-template-columns: 1fr;
-            }
-        }
-    </style>
+    <title>Translation Agent</title>
+    <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
     <div class="container">
         <div class="header">
-            <h1>LangGraph4j Translation & Grammar Analysis</h1>
-            <p>Powered by LangGraph4j and Ollama AI</p>
+            <h1>🌍 Translation Agent</h1>
+            <p>Multi-language Translation & Grammar Analysis - <strong>LangGraph4j</strong></p>
         </div>
-        
+
         <div class="content">
-            <div class="tabs">
-                <button class="tab active" onclick="showTab('translation')">Translation</button>
-                <button class="tab" onclick="showTab('grammar')">Grammar Analysis</button>
-                <button class="tab" onclick="showTab('multi')">Multi-Language</button>
+            <!-- Error Message -->
+            <div id="error-message" class="error-message"></div>
+
+            <!-- Input Section -->
+            <div class="input-section">
+                <label for="source-text">Enter Text:</label>
+                <div class="textarea-wrapper">
+                    <textarea 
+                        id="source-text" 
+                        placeholder="Enter text to translate..."
+                        maxlength="10000"
+                    ></textarea>
+                    <div id="char-counter" class="char-counter">0 / 10000</div>
+                </div>
             </div>
-            
-            <!-- Translation Tab -->
-            <div id="translation" class="tab-content active">
-                <div class="form-group">
-                    <label for="sourceLang">Source Language:</label>
-                    <select id="sourceLang">
-                        <option value="en">English</option>
-                        <option value="zh">Chinese</option>
-                        <option value="ja">Japanese</option>
-                        <option value="ko">Korean</option>
-                        <option value="fr">French</option>
-                        <option value="de">German</option>
-                        <option value="es">Spanish</option>
-                        <option value="it">Italian</option>
-                        <option value="pt">Portuguese</option>
-                        <option value="ru">Russian</option>
-                        <option value="ar">Arabic</option>
-                    </select>
-                </div>
-                
-                <div class="form-group">
-                    <label for="targetLang">Target Language:</label>
-                    <select id="targetLang">
-                        <option value="zh">Chinese</option>
-                        <option value="en">English</option>
-                        <option value="ja">Japanese</option>
-                        <option value="ko">Korean</option>
-                        <option value="fr">French</option>
-                        <option value="de">German</option>
-                        <option value="es">Spanish</option>
-                        <option value="it">Italian</option>
-                        <option value="pt">Portuguese</option>
-                        <option value="ru">Russian</option>
-                        <option value="ar">Arabic</option>
-                    </select>
-                </div>
-                
-                <div class="form-group">
-                    <label for="textToTranslate">Text to Translate:</label>
-                    <textarea id="textToTranslate" placeholder="Enter text to translate..."></textarea>
-                </div>
-                
-                <button class="btn" onclick="translateText()">Translate</button>
-                
-                <div id="translationResult"></div>
-            </div>
-            
-            <!-- Grammar Analysis Tab -->
-            <div id="grammar" class="tab-content">
-                <div class="form-group">
-                    <label for="analysisLang">Language:</label>
-                    <select id="analysisLang">
-                        <option value="en">English</option>
-                        <option value="zh">Chinese</option>
-                        <option value="ja">Japanese</option>
-                        <option value="ko">Korean</option>
-                        <option value="fr">French</option>
-                        <option value="de">German</option>
-                        <option value="es">Spanish</option>
-                        <option value="it">Italian</option>
-                        <option value="pt">Portuguese</option>
-                        <option value="ru">Russian</option>
-                        <option value="ar">Arabic</option>
-                    </select>
-                </div>
-                
-                <div class="form-group">
-                    <label for="textToAnalyze">Text to Analyze:</label>
-                    <textarea id="textToAnalyze" placeholder="Enter text to analyze..."></textarea>
-                </div>
-                
-                <button class="btn" onclick="analyzeGrammar()">Analyze Grammar</button>
-                
-                <div id="analysisResult"></div>
-            </div>
-            
-            <!-- Multi-Language Tab -->
-            <div id="multi" class="tab-content">
-                <div class="form-group">
-                    <label for="multiSourceLang">Source Language:</label>
-                    <select id="multiSourceLang">
-                        <option value="en">English</option>
-                        <option value="zh">Chinese</option>
-                        <option value="ja">Japanese</option>
-                        <option value="ko">Korean</option>
-                        <option value="fr">French</option>
-                        <option value="de">German</option>
-                        <option value="es">Spanish</option>
-                        <option value="it">Italian</option>
-                        <option value="pt">Portuguese</option>
-                        <option value="ru">Russian</option>
-                        <option value="ar">Arabic</option>
-                    </select>
-                </div>
-                
-                <div class="form-group">
-                    <label for="multiText">Text to Translate:</label>
-                    <textarea id="multiText" placeholder="Enter text to translate to multiple languages..."></textarea>
-                </div>
-                
-                <div class="form-group">
-                    <label>Target Languages:</label>
-                    <div id="targetLanguages">
-                        <label><input type="checkbox" value="zh" checked> Chinese</label>
-                        <label><input type="checkbox" value="ja"> Japanese</label>
-                        <label><input type="checkbox" value="ko"> Korean</label>
-                        <label><input type="checkbox" value="fr"> French</label>
-                        <label><input type="checkbox" value="de"> German</label>
-                        <label><input type="checkbox" value="es"> Spanish</label>
-                        <label><input type="checkbox" value="it"> Italian</label>
-                        <label><input type="checkbox" value="pt"> Portuguese</label>
-                        <label><input type="checkbox" value="ru"> Russian</label>
-                        <label><input type="checkbox" value="ar"> Arabic</label>
+
+            <!-- Language Selector -->
+            <div class="language-selector">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                    <label style="margin-bottom: 0;">Select Target Languages:</label>
+                    <div style="display: flex; gap: 10px;">
+                        <button id="select-all-btn" style="padding: 6px 12px; font-size: 13px; background: #667eea; color: white; border: none; border-radius: 4px; cursor: pointer;">Select All</button>
+                        <button id="deselect-all-btn" style="padding: 6px 12px; font-size: 13px; background: #999; color: white; border: none; border-radius: 4px; cursor: pointer;">Deselect All</button>
                     </div>
                 </div>
-                
-                <button class="btn" onclick="translateMultiple()">Translate to Selected Languages</button>
-                
-                <div id="multiResult"></div>
+                <div class="language-grid">
+                    <div class="language-option" data-lang="en">
+                        <input type="checkbox" id="lang-en" value="en">
+                        <label for="lang-en" class="language-label-text">
+                            <span class="english">English</span>
+                        </label>
+                    </div>
+                    <div class="language-option" data-lang="zh">
+                        <input type="checkbox" id="lang-zh" value="zh">
+                        <label for="lang-zh" class="language-label-text">
+                            <span class="english">Chinese</span>
+                        </label>
+                    </div>
+                    <div class="language-option" data-lang="ja">
+                        <input type="checkbox" id="lang-ja" value="ja">
+                        <label for="lang-ja" class="language-label-text">
+                            <span class="english">Japanese</span>
+                        </label>
+                    </div>
+                    <div class="language-option" data-lang="ko">
+                        <input type="checkbox" id="lang-ko" value="ko">
+                        <label for="lang-ko" class="language-label-text">
+                            <span class="english">Korean</span>
+                        </label>
+                    </div>
+                    <div class="language-option" data-lang="fr">
+                        <input type="checkbox" id="lang-fr" value="fr">
+                        <label for="lang-fr" class="language-label-text">
+                            <span class="english">French</span>
+                        </label>
+                    </div>
+                    <div class="language-option" data-lang="de">
+                        <input type="checkbox" id="lang-de" value="de">
+                        <label for="lang-de" class="language-label-text">
+                            <span class="english">German</span>
+                        </label>
+                    </div>
+                    <div class="language-option" data-lang="es">
+                        <input type="checkbox" id="lang-es" value="es">
+                        <label for="lang-es" class="language-label-text">
+                            <span class="english">Spanish</span>
+                        </label>
+                    </div>
+                    <div class="language-option" data-lang="it">
+                        <input type="checkbox" id="lang-it" value="it">
+                        <label for="lang-it" class="language-label-text">
+                            <span class="english">Italian</span>
+                        </label>
+                    </div>
+                    <div class="language-option" data-lang="pt">
+                        <input type="checkbox" id="lang-pt" value="pt">
+                        <label for="lang-pt" class="language-label-text">
+                            <span class="english">Portuguese</span>
+                        </label>
+                    </div>
+                    <div class="language-option" data-lang="ru">
+                        <input type="checkbox" id="lang-ru" value="ru">
+                        <label for="lang-ru" class="language-label-text">
+                            <span class="english">Russian</span>
+                        </label>
+                    </div>
+                    <div class="language-option" data-lang="ar">
+                        <input type="checkbox" id="lang-ar" value="ar">
+                        <label for="lang-ar" class="language-label-text">
+                            <span class="english">Arabic</span>
+                        </label>
+                    </div>
+                    <div class="language-option" data-lang="hi">
+                        <input type="checkbox" id="lang-hi" value="hi">
+                        <label for="lang-hi" class="language-label-text">
+                            <span class="english">Hindi</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Button Group -->
+            <div class="button-group">
+                <button id="translate-btn">Translate</button>
+                <button id="clear-btn">Clear</button>
+            </div>
+
+            <!-- Loading Indicator -->
+            <div id="loading-indicator" class="loading-indicator">
+                <div class="spinner"></div>
+                <p>Translating...</p>
+            </div>
+
+            <!-- Results Section -->
+            <div id="results-section" class="results-section">
+                <h2>Translation Results</h2>
+                <div id="translation-results"></div>
             </div>
         </div>
     </div>
 
-    <script>
-        const API_BASE_URL = 'http://localhost:50400/api';
-        
-        function showTab(tabName) {
-            // Hide all tabs
-            document.querySelectorAll('.tab-content').forEach(tab => {
-                tab.classList.remove('active');
-            });
-            document.querySelectorAll('.tab').forEach(tab => {
-                tab.classList.remove('active');
-            });
-            
-            // Show selected tab
-            document.getElementById(tabName).classList.add('active');
-            event.target.classList.add('active');
-        }
-        
-        function showLoading(elementId) {
-            const element = document.getElementById(elementId);
-            element.innerHTML = `
-                <div class="loading">
-                    <div class="spinner"></div>
-                    <p>Processing...</p>
-                </div>
-            `;
-        }
-        
-        function showError(elementId, message) {
-            const element = document.getElementById(elementId);
-            element.innerHTML = `
-                <div class="result error">
-                    <h3>Error</h3>
-                    <div class="result-content">${message}</div>
-                </div>
-            `;
-        }
-        
-        function showTranslationResult(result) {
-            const element = document.getElementById('translationResult');
-            if (result.error) {
-                element.innerHTML = `
-                    <div class="result error">
-                        <h3>Error</h3>
-                        <div class="result-content">${result.error}</div>
-                    </div>
-                `;
-            } else {
-                element.innerHTML = `
-                    <div class="result">
-                        <h3>Translation Result</h3>
-                        <div class="result-content">${result.translatedText}</div>
-                        <p><strong>Confidence:</strong> ${(result.confidence * 100).toFixed(1)}%</p>
-                    </div>
-                `;
-            }
-        }
-        
-        function showAnalysisResult(result) {
-            const element = document.getElementById('analysisResult');
-            if (result.error) {
-                element.innerHTML = `
-                    <div class="result error">
-                        <h3>Error</h3>
-                        <div class="result-content">${result.error}</div>
-                    </div>
-                `;
-            } else {
-                let componentsHtml = '';
-                if (result.components && result.components.length > 0) {
-                    componentsHtml = '<div class="grammar-components">';
-                    result.components.forEach(component => {
-                        componentsHtml += `
-                            <div class="grammar-component" style="background-color: ${component.color}">
-                                ${component.component} (${component.type})
-                            </div>
-                        `;
-                    });
-                    componentsHtml += '</div>';
-                }
-                
-                element.innerHTML = `
-                    <div class="result">
-                        <h3>Grammar Analysis Result</h3>
-                        <div class="result-content">${result.text}</div>
-                        ${componentsHtml}
-                    </div>
-                `;
-            }
-        }
-        
-        function showMultiTranslationResult(results) {
-            const element = document.getElementById('multiResult');
-            let html = '<div class="multi-translations">';
-            
-            for (const [language, result] of Object.entries(results)) {
-                const languageNames = {
-                    'zh': 'Chinese',
-                    'ja': 'Japanese',
-                    'ko': 'Korean',
-                    'fr': 'French',
-                    'de': 'German',
-                    'es': 'Spanish',
-                    'it': 'Italian',
-                    'pt': 'Portuguese',
-                    'ru': 'Russian',
-                    'ar': 'Arabic'
-                };
-                
-                html += `
-                    <div class="translation-card">
-                        <h4>${languageNames[language] || language}</h4>
-                        <div class="result-content">
-                            ${result.error ? `<span style="color: red;">${result.error}</span>` : result.translatedText}
-                        </div>
-                    </div>
-                `;
-            }
-            
-            html += '</div>';
-            element.innerHTML = html;
-        }
-        
-        async function translateText() {
-            const text = document.getElementById('textToTranslate').value;
-            const sourceLang = document.getElementById('sourceLang').value;
-            const targetLang = document.getElementById('targetLang').value;
-            
-            if (!text.trim()) {
-                showError('translationResult', 'Please enter text to translate');
-                return;
-            }
-            
-            showLoading('translationResult');
-            
-            try {
-                const response = await fetch(`${API_BASE_URL}/translateText`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({
-                        text: text,
-                        sourceLanguage: sourceLang,
-                        targetLanguage: targetLang
-                    })
-                });
-                
-                const result = await response.json();
-                showTranslationResult(result);
-            } catch (error) {
-                showError('translationResult', 'Failed to connect to translation service: ' + error.message);
-            }
-        }
-        
-        async function analyzeGrammar() {
-            const text = document.getElementById('textToAnalyze').value;
-            const language = document.getElementById('analysisLang').value;
-            
-            if (!text.trim()) {
-                showError('analysisResult', 'Please enter text to analyze');
-                return;
-            }
-            
-            showLoading('analysisResult');
-            
-            try {
-                const response = await fetch(`${API_BASE_URL}/analyzeGrammar`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({
-                        text: text,
-                        language: language
-                    })
-                });
-                
-                const result = await response.json();
-                showAnalysisResult(result);
-            } catch (error) {
-                showError('analysisResult', 'Failed to connect to analysis service: ' + error.message);
-            }
-        }
-        
-        async function translateMultiple() {
-            const text = document.getElementById('multiText').value;
-            const sourceLang = document.getElementById('multiSourceLang').value;
-            
-            if (!text.trim()) {
-                showError('multiResult', 'Please enter text to translate');
-                return;
-            }
-            
-            const checkboxes = document.querySelectorAll('#targetLanguages input[type="checkbox"]:checked');
-            const targetLanguages = Array.from(checkboxes).map(cb => cb.value);
-            
-            if (targetLanguages.length === 0) {
-                showError('multiResult', 'Please select at least one target language');
-                return;
-            }
-            
-            showLoading('multiResult');
-            
-            try {
-                const response = await fetch(`${API_BASE_URL}/translateMultiple?text=${encodeURIComponent(text)}&sourceLanguage=${sourceLang}`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(targetLanguages)
-                });
-                
-                const results = await response.json();
-                showMultiTranslationResult(results);
-            } catch (error) {
-                showError('multiResult', 'Failed to connect to translation service: ' + error.message);
-            }
-        }
-    </script>
+    <script src="js/translation.js"></script>
+    <script src="js/ui-interactions.js"></script>
 </body>
 </html>

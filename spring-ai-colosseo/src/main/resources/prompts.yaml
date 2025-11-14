@@ -1,0 +1,126 @@
+# Translation Agent Prompts Configuration
+
+# Translation prompts
+translation:
+  prompt: |
+    You are a professional translator. Translate the following text to %s (%s).
+
+    CRITICAL REQUIREMENTS:
+    - The translation MUST be in %s language ONLY
+    - Use ONLY %s script/characters (e.g., Arabic must use Arabic script, Hindi must use Devanagari, Chinese must use Chinese characters)
+    - Do NOT mix languages or scripts
+    - Maintain the original meaning and tone
+    - Preserve formatting including line breaks
+    - Use natural and idiomatic expressions in the target language
+    - Do NOT add explanations, notes, or translations in other languages
+
+    Source text:
+    %s
+
+    Provide ONLY the %s translation, nothing else.
+
+# Grammar analysis prompts
+grammar:
+  prompt: |
+    You are a linguistic expert in %s grammar. Analyze this sentence and return detailed grammatical components.
+
+    Sentence: %s
+
+    Return JSON format:
+    {
+      "components": [
+        {
+          "text": "word",
+          "componentType": "TYPE",
+          "startIndex": 0,
+          "endIndex": 4,
+          "features": {
+            "syntacticRole": "subject|predicate|object|direct_object|indirect_object",
+            "partOfSpeech": "noun|verb|adjective|adverb|pronoun|article|preposition|conjunction|particle",
+            "case": "nominative|accusative|genitive|dative|instrumental|prepositional",
+            "gender": "masculine|feminine|neuter",
+            "number": "singular|plural|dual",
+            "person": "first|second|third",
+            "tense": "present|past|future|present_perfect|past_perfect|present_continuous",
+            "aspect": "simple|progressive|perfect|perfective|imperfective",
+            "mood": "indicative|subjunctive|imperative|conditional",
+            "voice": "active|passive|reflexive",
+            "honorific": "plain|polite|formal|humble|respectful"
+          }
+        }
+      ]
+    }
+
+    Valid componentType values:
+    - Sentence roles: SUBJECT, PREDICATE, OBJECT, DIRECT_OBJECT, INDIRECT_OBJECT, COMPLEMENT, ADVERBIAL
+    - Parts of speech: NOUN, VERB, ADJECTIVE, ADVERB, PRONOUN, ARTICLE, PREPOSITION, CONJUNCTION, PARTICLE
+    - Verb types: MAIN_VERB, AUXILIARY_VERB, MODAL_VERB, COPULA
+    - Particles: TOPIC_PARTICLE, SUBJECT_PARTICLE, OBJECT_PARTICLE, POSSESSIVE_PARTICLE
+    - Chinese: MEASURE_WORD, ASPECT_PARTICLE_LE, ASPECT_PARTICLE_ZHE, ASPECT_PARTICLE_GUO, MODAL_PARTICLE_MA, MODAL_PARTICLE_NE, MODAL_PARTICLE_BA, STRUCTURAL_PARTICLE_DE
+    - Cases: NOMINATIVE_CASE, ACCUSATIVE_CASE, GENITIVE_CASE, DATIVE_CASE, INSTRUMENTAL_CASE, PREPOSITIONAL_CASE
+    - Tenses: PRESENT_TENSE, PAST_TENSE, FUTURE_TENSE, PRESENT_PERFECT, PAST_PERFECT, PRESENT_CONTINUOUS, PAST_CONTINUOUS, IMPERFECT, PRETERITE
+    - Aspects: SIMPLE_ASPECT, PROGRESSIVE_ASPECT, PERFECT_ASPECT, PERFECTIVE_ASPECT, IMPERFECTIVE_ASPECT
+    - Moods: INDICATIVE_MOOD, SUBJUNCTIVE_MOOD, IMPERATIVE_MOOD, CONDITIONAL_MOOD
+    - Voices: ACTIVE_VOICE, PASSIVE_VOICE, REFLEXIVE_VOICE
+    - Other: PUNCTUATION, DEFINITE_ARTICLE, INDEFINITE_ARTICLE, MASCULINE, FEMININE, NEUTER, SINGULAR, PLURAL
+
+    %s
+
+    CRITICAL INSTRUCTIONS:
+    1. Analyze EVERY word and punctuation mark
+    2. For EACH word, identify:
+       - Primary componentType (e.g., SUBJECT, VERB, NOUN)
+       - syntacticRole in features (subject/predicate/object/etc.)
+       - partOfSpeech in features (noun/verb/adjective/etc.)
+       - case (if applicable): nominative/accusative/genitive/dative/instrumental/prepositional
+       - gender (if applicable): masculine/feminine/neuter
+       - number (if applicable): singular/plural/dual
+       - person (for verbs/pronouns): first/second/third
+       - tense (for verbs): present/past/future/present_perfect/past_perfect/present_continuous
+       - aspect (for verbs): simple/progressive/perfect/perfective/imperfective
+       - mood (for verbs): indicative/subjunctive/imperative/conditional
+       - voice (for verbs): active/passive/reflexive
+       - honorific (if applicable): plain/polite/formal/humble/respectful
+    3. Use accurate startIndex and endIndex (0-indexed character positions)
+    4. Return ONLY valid JSON, no extra text or explanations
+    5. Be comprehensive - include ALL grammatical information for each word
+
+# Language-specific guidelines
+guidelines:
+  en: "English: Articles (a/an=INDEFINITE_ARTICLE, the=DEFINITE_ARTICLE). Tenses: present/past/future/present_perfect/past_perfect/present_continuous/past_continuous. Prepositions: in/on/at/by/with. Features: tense, aspect (simple/progressive/perfect), voice (active/passive), person, number."
+  zh: "Chinese: Aspect particles: 了(ASPECT_PARTICLE_LE), 着(ASPECT_PARTICLE_ZHE), 过(ASPECT_PARTICLE_GUO). Modal particles: 吗(MODAL_PARTICLE_MA), 呢(MODAL_PARTICLE_NE), 吧(MODAL_PARTICLE_BA). Measure words: 个/只/本/张/条/件(MEASURE_WORD). Structural: 的/地/得(STRUCTURAL_PARTICLE_DE). Features: aspect."
+  ja: "Japanese: Particles: は(TOPIC_PARTICLE), が(SUBJECT_PARTICLE), を(OBJECT_PARTICLE), に/で(DIRECTION_PARTICLE/LOCATION_PARTICLE), の(POSSESSIVE_PARTICLE), と/から/まで/へ/や/も(PARTICLE). Honorifics: です/ます(polite), だ/である(plain). Tense: た/だ(past), る/う(present). Features: honorific, tense, aspect."
+  ko: "Korean: Particles: 이/가(SUBJECT_PARTICLE), 을/를(OBJECT_PARTICLE), 의(POSSESSIVE_PARTICLE), 에/에서(DIRECTION_PARTICLE/LOCATION_PARTICLE), 으로/로/와/과/도/만/부터/까지(PARTICLE). Honorifics: 요(polite), 습니다/ㅂ니다(formal), 해라체(plain). Tense: 았/었(past), ㄴ다/는다(present), 겠(future). Features: honorific, tense."
+  fr: "French: Articles: le/la/les(DEFINITE_ARTICLE), un/une/des(INDEFINITE_ARTICLE), du/de la(partitive). Gender: masculine/feminine. Tenses: présent, imparfait(IMPERFECT), passé composé(PRESENT_PERFECT), futur, conditionnel. Mood: subjunctive. Features: gender, number, tense, mood, person."
+  de: "German: Articles: der/die/das(definite), ein/eine(indefinite). Cases: nominative/accusative/dative/genitive. Gender: masculine/feminine/neuter. Tenses: Präsens, Präteritum, Perfekt, Futur. Features: case, gender, number, tense."
+  es: "Spanish: Articles: el/la/los/las(definite), un/una/unos/unas(indefinite). Gender: masculine/feminine. Tenses: presente, pretérito(PRETERITE), imperfecto(IMPERFECT), futuro, condicional. Mood: subjunctive (presente/imperfecto de subjuntivo). Features: gender, number, tense, mood, person."
+  it: "Italian: Articles: il/lo/la/i/gli/le(definite), un/uno/una(indefinite). Gender: masculine/feminine. Tenses: presente, imperfetto(IMPERFECT), passato prossimo(PRESENT_PERFECT), futuro. Mood: indicativo, congiuntivo(SUBJUNCTIVE), condizionale, imperativo. Features: gender, number, tense, mood, person."
+  pt: "Portuguese: Articles: o/a/os/as(definite), um/uma/uns/umas(indefinite). Gender: masculine/feminine. Tenses: presente, pretérito perfeito, pretérito imperfeito(IMPERFECT), futuro. Mood: indicativo, subjuntivo(SUBJUNCTIVE), imperativo. Features: gender, number, tense, mood, person."
+  ru: "Russian: Cases: nominative/genitive/dative/accusative/instrumental/prepositional. Gender: masculine/feminine/neuter. Aspect: perfective/imperfective. Tenses: past/present/future. Features: case, gender, number (singular/plural), aspect, tense, person."
+  ar: "Arabic: Definiteness: ال(definite article). Gender: masculine/feminine. Number: singular/dual/plural. Cases: nominative/accusative/genitive. Tenses: past/present/future (with سوف/س). Mood: indicative/subjunctive/jussive. Features: case, gender, number, tense, mood."
+  hi: "Hindi: Postpositions: ने(ergative), को(dative/accusative), से(instrumental/ablative), में(locative), पर(locative). Gender: masculine/feminine. Number: singular/plural. Cases: direct/oblique/vocative. Tenses: present/past/future/present_perfect/past_perfect. Aspect: habitual/progressive/perfective. Honorifics: तू(intimate), तुम(informal), आप(formal). Features: case, gender, number, tense, aspect, honorific, person."
+
+# Error messages and validation
+messages:
+  validation:
+    empty_source: "Source text cannot be empty. Please enter text to translate."
+    text_too_long: "Source text exceeds maximum length of %d characters. Current length: %d characters."
+    no_languages: "At least one target language must be selected."
+    invalid_languages: "One or more selected language codes are invalid. Please select valid languages."
+    empty_analysis_text: "Text to analyze cannot be empty."
+    invalid_language_code: "Invalid language code: %s. Please select a valid language."
+    missing_translation: "Translation result does not contain translation for language: %s. Please translate to this language first."
+  
+  service:
+    unsupported_language: "Unsupported language code: %s"
+    empty_translation_result: "Translation service returned empty result for language: %s"
+    translation_failed: "Failed to translate to %s. The translation service may be unavailable."
+    grammar_unavailable: "Grammar analysis service is temporarily unavailable"
+    grammar_timeout: "Grammar analysis timed out after %d seconds. Please try again."
+    grammar_failed: "Grammar analysis failed. Please try again."
+    grammar_error: "An unexpected error occurred during grammar analysis. Please try again."
+    empty_grammar_response: "Grammar analysis returned empty response. Please try again."
+    invalid_grammar_format: "Grammar analysis returned invalid format. Please try again."
+    no_grammar_components: "Grammar analysis did not return any valid components. Please try again."
+    grammar_parse_error: "Failed to parse grammar analysis response. The service may have returned invalid data."
+    grammar_processing_error: "An unexpected error occurred while processing grammar analysis."

@@ -16,49 +16,48 @@ class TranslationService:
     
     def validate_request(self, request: TranslationRequest) -> Optional[str]:
         """Validate translation request"""
-        if not request.text or not request.text.strip():
+        if not request.sourceText or not request.sourceText.strip():
             return "Text cannot be empty"
         
-        if len(request.text) > MAX_TEXT_LENGTH:
+        if len(request.sourceText) > MAX_TEXT_LENGTH:
             return f"Text exceeds maximum length of {MAX_TEXT_LENGTH} characters"
         
-        if request.source_language not in SUPPORTED_LANGUAGES:
-            return f"Unsupported source language. Supported: {', '.join(SUPPORTED_LANGUAGES)}"
+        if not request.targetLanguages or len(request.targetLanguages) == 0:
+            return "At least one target language must be selected"
         
-        if request.target_language not in SUPPORTED_LANGUAGES:
-            return f"Unsupported target language. Supported: {', '.join(SUPPORTED_LANGUAGES)}"
-        
-        if request.source_language == request.target_language:
-            return "Source and target languages cannot be the same"
+        invalid_languages = [lang for lang in request.targetLanguages if lang not in SUPPORTED_LANGUAGES]
+        if invalid_languages:
+            return f"Unsupported languages: {', '.join(invalid_languages)}"
         
         return None
     
     async def translate_text(self, request: TranslationRequest) -> TranslationResult:
-        """Translate text using the translation agent"""
+        """Translate text to multiple languages"""
         validation_error = self.validate_request(request)
         if validation_error:
-            return TranslationResult(error=validation_error)
+            return TranslationResult(sourceText=request.sourceText, error=validation_error)
         
         try:
-            logger.info(f"Translating from {request.source_language} to {request.target_language}")
+            logger.info(f"Translating to languages: {request.targetLanguages}")
             
-            translated_text = await self.translation_agent.translate(
-                request.text,
-                request.source_language,
-                request.target_language,
-                request.context
-            )
+            translations = {}
+            for target_lang in request.targetLanguages:
+                translated_text = await self.translation_agent.translate(
+                    request.sourceText,
+                    "auto",  # Auto-detect source language
+                    target_lang,
+                    None
+                )
+                translations[target_lang] = translated_text
             
             return TranslationResult(
-                translated_text=translated_text,
-                source_language=request.source_language,
-                target_language=request.target_language,
-                confidence=0.95
+                sourceText=request.sourceText,
+                translations=translations
             )
             
         except Exception as e:
             logger.error(f"Translation failed: {e}")
-            return TranslationResult(error=f"Translation failed: {str(e)}")
+            return TranslationResult(sourceText=request.sourceText, error=f"Translation failed: {str(e)}")
     
     async def translate_to_multiple_languages(self, text: str, source_language: str, target_languages: List[str]) -> Dict[str, TranslationResult]:
         """Translate text to multiple languages in parallel"""
@@ -101,7 +100,7 @@ class AnalysisService:
         if len(request.text) > MAX_TEXT_LENGTH:
             return f"Text exceeds maximum length of {MAX_TEXT_LENGTH} characters"
         
-        if request.language not in SUPPORTED_LANGUAGES:
+        if request.languageCode not in SUPPORTED_LANGUAGES:
             return f"Unsupported language. Supported: {', '.join(SUPPORTED_LANGUAGES)}"
         
         return None
@@ -113,18 +112,18 @@ class AnalysisService:
             return AnalysisResult(error=validation_error)
         
         try:
-            logger.info(f"Analyzing grammar for {request.language}")
+            logger.info(f"Analyzing grammar for {request.languageCode}")
             
             analysis = await self.analysis_agent.analyze(
                 request.text,
-                request.language
+                request.languageCode
             )
             
             components = self.parse_grammar_components(analysis, request.text)
             
             return AnalysisResult(
-                text=request.text,
-                language=request.language,
+                originalText=request.text,
+                languageCode=request.languageCode,
                 components=components
             )
             
@@ -137,34 +136,54 @@ class AnalysisService:
         components = []
         
         # Define grammar component types and their colors
-        component_types = {
-            "noun": {"color": "#FF6B6B", "explanation": "Noun"},
-            "verb": {"color": "#4ECDC4", "explanation": "Verb"},
-            "adjective": {"color": "#45B7D1", "explanation": "Adjective"},
-            "adverb": {"color": "#96CEB4", "explanation": "Adverb"},
-            "preposition": {"color": "#FFEAA7", "explanation": "Preposition"},
-            "conjunction": {"color": "#DDA0DD", "explanation": "Conjunction"},
-            "pronoun": {"color": "#FFB6C1", "explanation": "Pronoun"},
-            "article": {"color": "#98FB98", "explanation": "Article"}
+        component_colors = {
+            "NOUN": "#FF6B6B",
+            "VERB": "#4ECDC4",
+            "ADJECTIVE": "#45B7D1",
+            "ADVERB": "#96CEB4",
+            "PREPOSITION": "#FFEAA7",
+            "CONJUNCTION": "#DDA0DD",
+            "PRONOUN": "#FFB6C1",
+            "ARTICLE": "#98FB98",
+            "DETERMINER": "#B0E0E6",
+            "PARTICLE": "#F0E68C"
         }
         
-        # Simple parsing - in a real implementation, you'd want more sophisticated parsing
-        lines = analysis.split('\n')
-        position = 0
+        # Split text into words for simple analysis
+        words = original_text.split()
+        current_pos = 0
         
-        for line in lines:
-            line_lower = line.lower()
-            for comp_type, comp_info in component_types.items():
-                if comp_type in line_lower:
-                    components.append(GrammarComponent(
-                        component=comp_type,
-                        type=comp_type,
-                        explanation=comp_info["explanation"],
-                        color=comp_info["color"],
-                        position=position,
-                        length=len(comp_type)
-                    ))
-                    position += 1
-                    break
+        for word in words:
+            # Find the word in the original text to get accurate position
+            start_index = original_text.find(word, current_pos)
+            if start_index == -1:
+                continue
+            
+            end_index = start_index + len(word)
+            current_pos = end_index
+            
+            # Simple heuristic - in real implementation, use proper NLP
+            component_type = "NOUN"  # Default
+            if len(word) > 0:
+                # Very basic type detection
+                if word.lower() in ['the', 'a', 'an']:
+                    component_type = "ARTICLE"
+                elif word.lower() in ['is', 'are', 'was', 'were', 'be', 'been', 'being']:
+                    component_type = "VERB"
+                elif word.lower() in ['and', 'or', 'but']:
+                    component_type = "CONJUNCTION"
+                elif word.lower() in ['in', 'on', 'at', 'to', 'from']:
+                    component_type = "PREPOSITION"
+            
+            color = component_colors.get(component_type, "#CCCCCC")
+            
+            components.append(GrammarComponent(
+                text=word,
+                componentType=component_type,
+                color=color,
+                startIndex=start_index,
+                endIndex=end_index,
+                features={}
+            ))
         
         return components
