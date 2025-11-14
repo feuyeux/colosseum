@@ -45,7 +45,24 @@ Start the application:
 python main.py
 ```
 
-The application will start on `http://localhost:8000`.
+The application will start on `http://localhost:60500`.
+
+### 访问 Web 界面
+
+启动后可通过浏览器访问：
+- **翻译服务界面：** http://localhost:60500
+
+### 关于 AutoGen Studio
+
+**注意：** AutoGen 0.7.5 版本不再包含 AutoGen Studio。AutoGen Studio 已经独立为 AG2 Studio 项目。
+
+如需使用可视化平台，建议使用 AG2 框架（AutoGen 的社区分支），它提供了 AG2 Studio：
+```bash
+pip install ag2[autogenstudio]
+ag2studio ui --port 8081
+```
+
+访问地址：http://localhost:8081
 
 ## Project Structure
 

@@ -39,13 +39,40 @@ This project demonstrates the use of OxyGent (version -) for building AI agent a
 
 ## Running the Application
 
+### Option 1: 运行翻译服务示例
+
 Start the application:
 
 ```bash
 python main.py
 ```
 
-The application will start on `http://localhost:8000`.
+The application will start on `http://localhost:60200`.
+
+### Option 2: 使用 OxyGent 自带管理平台
+
+OxyGent 框架自带可视化管理平台，用于管理和监控 Agent 工作流。
+
+**启动 OxyGent 平台：**
+
+```bash
+# 安装 OxyGent
+pip install oxygent
+
+# 启动平台（默认端口 7788）
+oxygent-server
+```
+
+**访问平台：**
+- 管理平台：http://localhost:7788
+
+**平台功能：**
+- Agent 工作流可视化编辑
+- 实时监控和调试
+- 任务执行历史查看
+- 配置管理
+
+**注意：** OxyGent 平台是框架自带的独立管理系统，与本示例项目的翻译服务是分开的。
 
 ## Project Structure
 

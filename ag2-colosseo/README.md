@@ -45,7 +45,26 @@ Start the application:
 python main.py
 ```
 
-The application will start on `http://localhost:8000`.
+The application will start on `http://localhost:60600`.
+
+### 访问 Web 界面
+
+启动后可通过浏览器访问：
+- **翻译服务界面：** http://localhost:60600
+
+### 使用 AG2 Studio（可选）
+
+AG2 框架提供可视化开发平台 AG2 Studio，用于构建和管理 Agent 工作流。
+
+**启动 AG2 Studio：**
+```bash
+pip install ag2[autogenstudio]
+ag2studio ui --port 8081
+```
+
+**访问地址：** http://localhost:8081
+
+**功能：** 可视化 Agent 工作流构建、实时调试、对话历史管理、配置管理
 
 ## Project Structure
 

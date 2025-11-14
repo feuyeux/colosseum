@@ -45,7 +45,30 @@ Start the application:
 python main.py
 ```
 
-The application will start on `http://localhost:8000`.
+The application will start on `http://localhost:60400`.
+
+### 访问 Web 界面
+
+启动后可通过浏览器访问：
+- **翻译服务界面：** http://localhost:60400
+
+### 使用 LangGraph Studio（可选）
+
+LangGraph 框架提供可视化调试工具 LangGraph Studio（需要 LangSmith 账号）。
+
+**启动 LangGraph Studio：**
+```bash
+pip install langgraph-cli
+export LANGCHAIN_API_KEY="your-api-key"
+export LANGCHAIN_TRACING_V2=true
+langgraph dev
+```
+
+**访问地址：** http://localhost:8123
+
+**功能：** 图结构可视化、状态检查、步骤追踪、交互式调试
+
+**注意：** 需要在 https://smith.langchain.com/ 注册并获取 API Key。
 
 ## Project Structure
 

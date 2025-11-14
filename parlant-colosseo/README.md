@@ -41,6 +41,14 @@ python main.py
 
 The application will start on `http://localhost:60100`.
 
+### 访问 Web 界面
+
+启动后可通过浏览器访问：
+- **翻译服务界面：** http://localhost:60100
+- **Parlant 管理界面：** http://localhost:60100/admin （如果 Parlant 框架配置了管理界面）
+
+**注意：** Parlant 框架本身可能提供管理界面，具体可用性取决于框架版本和配置。
+
 ## API Endpoints
 
 ### Health Check

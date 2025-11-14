@@ -45,7 +45,22 @@ Start the application:
 python main.py
 ```
 
-The application will start on `http://localhost:8000`.
+The application will start on `http://localhost:60700`.
+
+### 访问 Web 界面
+
+启动后可通过浏览器访问：
+- **翻译服务界面：** http://localhost:60700
+
+### 使用 CrewAI+ 平台（可选）
+
+CrewAI 提供企业版云平台 CrewAI+，用于可视化构建和管理 Agent 团队。
+
+**访问地址：** https://app.crewai.com
+
+**功能：** 可视化工作流编辑器、团队协作、监控面板、部署管理
+
+**注意：** 需要在 CrewAI 官网注册账号。
 
 ## Project Structure
 

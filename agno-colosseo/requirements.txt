@@ -1,0 +1,8 @@
+agno>=2.2.11
+fastapi==0.115.12
+uvicorn==0.31.1
+pydantic==2.9.2
+PyYAML==6.0.1
+httpx==0.27.2
+aiofiles==24.1.0
+python-multipart==0.0.20

@@ -45,7 +45,29 @@ Start the application:
 python main.py
 ```
 
-The application will start on `http://localhost:8000`.
+The application will start on `http://localhost:60800`.
+
+### 访问 Web 界面
+
+启动后可通过浏览器访问：
+- **翻译服务界面：** http://localhost:60800
+
+### 使用 LlamaIndex 平台（可选）
+
+LlamaIndex 提供多种可视化工具：
+
+**1. LlamaIndex Cloud（云平台）**
+- **访问地址：** https://cloud.llamaindex.ai
+- **功能：** RAG 应用构建、索引管理、查询测试、部署管理
+
+**2. 本地 RAG UI**
+```bash
+pip install llama-index-cli
+llamaindex-cli rag --create-app
+```
+- **功能：** 本地 RAG 应用快速搭建和测试
+
+**注意：** LlamaIndex Cloud 需要注册账号。
 
 ## Project Structure
 
