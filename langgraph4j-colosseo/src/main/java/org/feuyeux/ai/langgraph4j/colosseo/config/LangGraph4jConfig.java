@@ -2,8 +2,6 @@ package org.feuyeux.ai.langgraph4j.colosseo.config;
 
 import dev.langchain4j.model.ollama.OllamaChatModel;
 import dev.langchain4j.model.ollama.OllamaStreamingChatModel;
-import dev.langchain4j.model.chat.ChatLanguageModel;
-import dev.langchain4j.model.streaming.StreamingChatLanguageModel;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -23,7 +21,7 @@ public class LangGraph4jConfig {
     private Duration ollamaTimeout;
     
     @Bean
-    public ChatLanguageModel chatLanguageModel() {
+    public OllamaChatModel chatLanguageModel() {
         return OllamaChatModel.builder()
                 .baseUrl(ollamaBaseUrl)
                 .modelName(ollamaModelName)
@@ -32,7 +30,7 @@ public class LangGraph4jConfig {
     }
     
     @Bean
-    public StreamingChatLanguageModel streamingChatLanguageModel() {
+    public OllamaStreamingChatModel streamingChatLanguageModel() {
         return OllamaStreamingChatModel.builder()
                 .baseUrl(ollamaBaseUrl)
                 .modelName(ollamaModelName)

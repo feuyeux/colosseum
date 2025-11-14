@@ -1,0 +1,3 @@
+@echo off
+echo 🔗 Starting LangGraph4j Colosseo...
+mvn spring-boot:run -s settings.xml

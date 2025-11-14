@@ -4,89 +4,61 @@ Spring AI implementation for the Colosseum project.
 
 ## Overview
 
-This project demonstrates the use of Spring AI (version 1.1.0) for building AI agent applications. It provides a multilingual translation and grammar analysis service.
+Multilingual translation and grammar analysis service built with Spring Boot and Spring AI.
 
-## Framework Information
+## Build & Run (JDK 21 + UTF-8)
 
-- **Framework**: Spring AI
-- **Version**: 1.1.0
-- **Official Documentation**: https://github.com/spring-projects/spring-ai/tags
-- **Project Type**: Java (Maven)
-
-## Prerequisites
-
-- Java 17 or higher
-- Maven 3.6 or higher
-- Ollama running locally (default: http://localhost:11434)
-
-## Installation
-
-1. Clone the repository and navigate to this project:
+1. Navigate to the module:
    ```bash
    cd spring-ai-colosseo
    ```
 
-2. Build the project:
+2. Build (using Maven Central):
    ```bash
-   mvn clean install
+   mvn -DskipTests clean package
    ```
 
-## Running the Application
+3. Start the application:
+   ```bash
+   java -jar target/spring-ai-colosseo-1.0.0-SNAPSHOT.jar
+   ```
 
-Start the application using Maven:
-
-```bash
-mvn spring-boot:run
-```
-
-The application will start on `http://localhost:8080`.
-
-## Project Structure
-
-```
-spring-ai-colosseo/
-├── src/
-│   ├── main/
-│   │   ├── java/          # Java source code
-│   │   └── resources/     # Configuration files and static resources
-│   └── test/              # Test files
-├── pom.xml                # Maven configuration
-└── README.md              # This file
-```
+4. Service runs at `http://localhost:50100`.
 
 ## API Endpoints
 
-### Health Check
-- **GET** `/actuator/health` - Check application health status
-
-### Translation Service
-- **POST** `/api/translate` - Translate text between languages
+- **GET** `/health` — simple health check
+- **POST** `/echo` — echo request body (UTF-8 verification)
+- **POST** `/api/translateText` — translate into multiple target languages
   ```json
   {
-    "text": "Hello, world!",
-    "sourceLanguage": "ENGLISH",
-    "targetLanguage": "CHINESE"
+    "sourceText": "你好，世界！",
+    "targetLanguages": ["ENGLISH","JAPANESE"]
   }
   ```
-
-### Grammar Analysis
-- **POST** `/api/analyze` - Analyze grammar structure
+- **POST** `/api/analyzeGrammar` — grammar analysis for a language
   ```json
   {
-    "text": "I love programming",
-    "language": "ENGLISH"
+    "text": "こんにちは世界",
+    "languageCode": "JAPANESE"
   }
   ```
 
 ## Configuration
 
-Configuration is managed through `src/main/resources/application.yaml`:
+`src/main/resources/application.yaml`:
 
-- `ollama.base-url`: Ollama service URL (default: http://localhost:11434)
-- `ollama.model`: LLM model to use (default: qwen2.5:7b)
-- `server.port`: Application port (default: 8080)
+- `spring.ai.ollama.base-url`: `http://localhost:11434`
+- `spring.ai.ollama.chat.options.model`: `qwen2.5:latest`
+- `server.port`: `8081`
+- Encoding:
+  - `spring.messages.encoding: UTF-8`
+  - `server.servlet.encoding.charset: UTF-8`
+  - `server.servlet.encoding.enabled: true`
+  - `server.servlet.encoding.force: true`
+  - `logging.charset.console: UTF-8`
+  - `logging.charset.file: UTF-8`
 
 ## Related Links
 
-- [Main Colosseum Project](../../README.md)
-- [Spring AI Documentation](https://github.com/spring-projects/spring-ai/tags)
+- [Spring AI Documentation](https://github.com/spring-projects/spring-ai)

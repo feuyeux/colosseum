@@ -26,18 +26,18 @@ public class TranslationService {
     @Value("${app.supported-languages:en,zh,ja,ko,fr,de,es,it,pt,ru,ar}")
     private String supportedLanguages;
     
-    private static final Map<String, String> LANGUAGE_NAMES = Map.of(
-        "en", "English",
-        "zh", "Chinese",
-        "ja", "Japanese", 
-        "ko", "Korean",
-        "fr", "French",
-        "de", "German",
-        "es", "Spanish",
-        "it", "Italian",
-        "pt", "Portuguese",
-        "ru", "Russian",
-        "ar", "Arabic"
+    private static final Map<String, String> LANGUAGE_NAMES = Map.ofEntries(
+        Map.entry("en", "English"),
+        Map.entry("zh", "Chinese"),
+        Map.entry("ja", "Japanese"), 
+        Map.entry("ko", "Korean"),
+        Map.entry("fr", "French"),
+        Map.entry("de", "German"),
+        Map.entry("es", "Spanish"),
+        Map.entry("it", "Italian"),
+        Map.entry("pt", "Portuguese"),
+        Map.entry("ru", "Russian"),
+        Map.entry("ar", "Arabic")
     );
     
     public TranslationService(TranslationGraph translationGraph) {

@@ -5,6 +5,8 @@ spring:
       chat:
         options:
           model: qwen2.5:latest
+  messages:
+    encoding: UTF-8
 
 translation:
   max-text-length: 10000
@@ -12,9 +14,17 @@ translation:
   analysis-timeout: 90
 
 server:
-  port: 8081
+  port: 50100
+  servlet:
+    encoding:
+      charset: UTF-8
+      enabled: true
+      force: true
 
 logging:
   level:
     org.feuyeux.ai.springai.colosseo: DEBUG
     org.springframework.ai: DEBUG
+  charset:
+    console: UTF-8
+    file: UTF-8

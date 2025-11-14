@@ -1,0 +1,3 @@
+@echo off
+echo 🚀 Starting LangChain4j Colosseo...
+mvn spring-boot:run -s settings.xml -U

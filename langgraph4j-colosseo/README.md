@@ -6,18 +6,6 @@ langgraph4j implementation for the Colosseum project.
 
 This project demonstrates the use of langgraph4j (version 1.7.2) for building AI agent applications. It provides a multilingual translation and grammar analysis service.
 
-## Framework Information
-
-- **Framework**: langgraph4j
-- **Version**: 1.7.2
-- **Official Documentation**: https://github.com/langgraph4j/langgraph4j/tags
-- **Project Type**: Java (Maven)
-
-## Prerequisites
-
-- Java 17 or higher
-- Maven 3.6 or higher
-- Ollama running locally (default: http://localhost:11434)
 
 ## Installation
 
@@ -39,20 +27,8 @@ Start the application using Maven:
 mvn spring-boot:run
 ```
 
-The application will start on `http://localhost:8080`.
+The application will start on `http://localhost:50400`.
 
-## Project Structure
-
-```
-langgraph4j-colosseo/
-├── src/
-│   ├── main/
-│   │   ├── java/          # Java source code
-│   │   └── resources/     # Configuration files and static resources
-│   └── test/              # Test files
-├── pom.xml                # Maven configuration
-└── README.md              # This file
-```
 
 ## API Endpoints
 

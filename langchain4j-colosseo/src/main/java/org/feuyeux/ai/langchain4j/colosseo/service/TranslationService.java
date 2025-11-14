@@ -169,7 +169,7 @@ public class TranslationService {
             String analysisResponse;
             try {
                 analysisResponse = CompletableFuture.supplyAsync(() -> 
-                    chatModel.generate(prompt)
+                    chatModel.chat(prompt)
                 ).get(analysisTimeoutSeconds, TimeUnit.SECONDS);
                 
             } catch (TimeoutException e) {
@@ -303,7 +303,7 @@ public class TranslationService {
         try {
             String prompt = buildTranslationPrompt(sourceText, targetLanguage);
             
-            String translation = chatModel.generate(prompt);
+            String translation = chatModel.chat(prompt);
             
             if (translation == null || translation.trim().isEmpty()) {
                 logger.error("AI service returned empty translation for language: {}", targetLanguageCode);

@@ -37,7 +37,7 @@ embabel:
       llm: qwen2.5:latest
 
 server:
-  port: 8080
+  port: 50200
 
 translation:
   max-text-length: 10000

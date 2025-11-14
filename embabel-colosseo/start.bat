@@ -1,0 +1,3 @@
+@echo off
+echo 🌍 Starting Savant...
+mvn spring-boot:run -s settings.xml

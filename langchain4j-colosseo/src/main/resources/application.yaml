@@ -10,7 +10,7 @@ translation:
   analysis-timeout: 90
 
 server:
-  port: 8082
+  port: 50300
 
 logging:
   level:

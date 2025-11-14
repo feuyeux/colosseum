@@ -1,7 +1,6 @@
 package org.feuyeux.ai.langgraph4j.colosseo.graph;
 
-import dev.langchain4j.model.chat.ChatLanguageModel;
-import dev.langchain4j.service.AiServices;
+import dev.langchain4j.model.ollama.OllamaChatModel;
 import org.feuyeux.ai.langgraph4j.colosseo.model.AnalysisRequest;
 import org.feuyeux.ai.langgraph4j.colosseo.model.AnalysisResult;
 import org.feuyeux.ai.langgraph4j.colosseo.model.GrammarComponent;
@@ -9,28 +8,21 @@ import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 @Component
 public class AnalysisGraph {
     
-    private final ChatLanguageModel chatLanguageModel;
-    private final AnalysisAgent analysisAgent;
+    private final OllamaChatModel chatLanguageModel;
     
-    public AnalysisGraph(ChatLanguageModel chatLanguageModel) {
+    public AnalysisGraph(OllamaChatModel chatLanguageModel) {
         this.chatLanguageModel = chatLanguageModel;
-        this.analysisAgent = AiServices.builder(AnalysisAgent.class)
-                .chatLanguageModel(chatLanguageModel)
-                .build();
     }
     
     public AnalysisResult analyze(AnalysisRequest request) {
         try {
-            String analysis = analysisAgent.analyzeGrammar(
-                request.getText(),
-                request.getLanguage()
-            );
+            String prompt = String.format("Analyze the grammar of this %s text: %s", 
+                request.getLanguage(), request.getText());
+            String analysis = chatLanguageModel.chat(prompt);
             
             List<GrammarComponent> components = parseGrammarComponents(analysis, request.getText());
             
@@ -67,9 +59,5 @@ public class AnalysisGraph {
         }
         
         return components;
-    }
-    
-    interface AnalysisAgent {
-        String analyzeGrammar(String text, String language);
     }
 }

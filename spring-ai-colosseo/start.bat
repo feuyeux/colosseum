@@ -1,0 +1,3 @@
+@echo off
+echo Starting Spring AI Colosseo...
+mvn spring-boot:run
